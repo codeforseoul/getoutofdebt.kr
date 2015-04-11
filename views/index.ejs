@@ -1,0 +1,30 @@
+<% include header %>
+
+<section id="main-menu" role="tabpanel">
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="menulist">
+    <li role="menu">
+      <a href="#searchform" aria-controls="searchform" role="tab" data-toggle="tab">
+        <img src="/img/search-selected.png" alt="" />
+      </a>
+    </li>
+    <li role="menu" class="active">
+      <a href="#central" aria-controls="central" role="tab" data-toggle="tab">
+        <img src="/img/map-selected.png" alt="" />
+      </a>
+    </li>
+  </ul>
+</section>
+
+<section id="main-content">
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane fade" id="searchform">
+      <% include main_search %>
+    </div>
+    <div role="tabpanel" class="tab-pane fade in active" id="central">
+      <% include main_map %>
+    </div>
+  </div>
+</section>

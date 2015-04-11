@@ -1,0 +1,31 @@
+{
+  "name": "test-localdebt",
+  "version": "0.0.0",
+  "dependencies": {
+    "body-parser": "~1.0.0",
+    "compression": "1.0.1",
+    "ejs": "~1.0.0",
+    "errorhandler": "~1.0.0",
+    "express": "~4.0.0-rc2",
+    "express-ejs-layouts": "^1.1.0",
+    "express-layout": "^0.1.0",
+    "method-override": "~1.0.0",
+    "mongoose": "~3.8.7",
+    "morgan": "~1.0.0",
+    "static-favicon": "~1.0.1"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.4",
+    "grunt-concurrent": "~0.5.0",
+    "grunt-contrib-concat": "~0.4.0",
+    "grunt-contrib-cssmin": "~0.9.0",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-sass": "~0.7.3",
+    "grunt-contrib-uglify": "~0.4.0",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-express-server": "^0.4.19",
+    "grunt-node-inspector": "~0.1.5",
+    "grunt-open": "^0.2.3",
+    "matchdep": "~0.3.0"
+  }
+}

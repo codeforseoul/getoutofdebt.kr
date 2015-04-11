@@ -1,0 +1,398 @@
+$basic-width:               1000px;
+$map-width:                 600px;
+$map-height:                700px;
+$municipality-graph-width:  410px;
+$municipality-graph-height: 400px;
+
+
+header {
+  width: $basic-width;
+  margin: 30px auto;
+
+  > .title {
+    text-align: center;
+    font-size: 4.9rem;
+  }
+}
+
+body {
+  background-color: #DFD8C8;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+}
+
+
+#main-menu {
+  width: $basic-width;
+  margin: 0 auto;
+
+  li {
+    width: $basic-width/2;
+    text-align: center;
+    border-bottom: 5px solid #AFA590;
+
+    img {
+      width: 30px;
+    }
+  }
+
+  li.active {
+    border-bottom: 5px solid #A56701;
+  }
+}
+
+// #main-content {
+//   width: $basic-width;
+//   margin: 0 auto;
+
+//   > .tab-content > .tab-pane {
+//     position: relative;
+//     padding: 50px 0px;
+//   }
+// }
+
+#searchform {
+  text-align: center;
+  margin-top: 50px;
+
+  > .search-area {
+
+    > input {
+      width: 500px;
+      height: 50px;
+      margin: 0 auto;
+    }
+  }
+}
+
+.autocomplete-suggestions { background: #FFF; overflow: auto; }
+
+.autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+.autocomplete-suggestion:hover { cursor: pointer;}
+.autocomplete-selected { background: #F0F0F0; }
+.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+.autocomplete-group { padding: 2px 5px; }
+.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+
+#provinces, #municipalities {
+  width: $basic-width;
+  margin: 0 auto;
+  height: $map-height;
+  position: relative;
+}
+
+.map {
+
+  svg {
+    position: absolute;
+    left: 0;
+
+    .province:hover {
+      fill: #A56804;
+    }
+
+    .province.province-selected {
+      fill: #A56804;
+    }
+
+  }
+}
+
+.graph {
+  position: absolute;
+  top: 0px;
+  left: 550px;
+  padding: 50px 0px;
+  display: inline-block;
+
+  .graph-title {
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
+  .graph-region {
+    font-size: 17px;
+  }
+
+  > ul.nav.nav-tabs {
+    > li {
+      color: black;
+      background-color: white;
+      border-radius: 25px;
+      border: 1px solid #E3E3E3;
+      display: none;
+
+      > a {
+        color: black;
+      }
+    }
+
+    > li.active {
+      z-index: none;
+    }
+
+    > li:first-child {
+      position: absolute;
+      top: 290px;
+      left: -28px;
+      z-index: 1;
+    }
+
+    > li:first-child:hover {
+      cursor: pointer;
+    }
+
+    > li:last-child {
+      position: absolute;
+      top: 290px;
+      right: -28px;
+      z-index: 1;
+    }
+  }
+
+    .link-to-maingraph {
+      position: absolute;
+      bottom: 0px;
+      height: 80px;
+      width: $municipality-graph-width;
+      background-color: #6794B7;
+      color: white;
+      font-size: 27px;
+      padding: 22px;
+      text-align: center;
+    }
+
+    .link-to-maingraph:hover {
+      cursor: pointer;
+    }
+
+  .tab-info {
+    position: absolute;
+    width: $municipality-graph-width;
+    bottom: 0px;
+    background-color: #F0F0F0;
+    color: #555555;
+
+    .icon {
+      text-align: center;
+      display: inline-block;
+      float: left;
+      width: $municipality-graph-width * 1/6;
+
+      > img {
+        margin-top: 18px;
+      }
+    }
+
+    .description {
+      display: inline-block;
+      float: left;
+      width: $municipality-graph-width * 5/6;
+      font-size: 1.6rem;
+      padding: 11px 10px;
+      line-height: 26px;
+
+      > span {
+        font-weight: bold;
+      }
+    }
+  }
+
+  #municipal-debt, #municipal-effort {
+    position: relative;
+
+    .subgraph-guide {
+      position: absolute;
+      top: $municipality-graph-height/2.5;
+      left: $municipality-graph-width/2.5;
+    }
+
+    > svg {
+      background-color: white;
+    }
+  }
+
+  #municipal-debt {
+    height: $municipality-graph-height + 150px;
+
+    > .tab-info {
+      height: 150px;
+    }
+  }
+
+  #municipal-effort {
+    height: $municipality-graph-height + 150px;
+
+    > .tab-info {
+      height: 150px;
+      bottom: 20px;
+    }
+  }
+
+  .bar {
+    fill: #B4B4B4;
+  }
+
+  .bar:hover {
+    cursor: pointer;
+    fill: #A56804;
+  }
+
+  .bar-positive {
+    fill: blue;
+  }
+
+  .bar-negative {
+    fill: red;
+  }
+
+  .bar-additional {
+    fill: #AD731A;
+  }
+
+  .bar-highlight {
+    fill: #C3C3C4;
+  }
+
+  text {
+    font: 10px sans-serif;
+  }
+
+  path.line {
+    fill: none;
+    stroke: #A56804;
+    shape-rendering: crispEdges;
+  }
+
+  path.domain {
+    fill: none;
+    shape-rendering: crispEdges;
+  }
+
+}
+
+#municipal-debt {
+  .bar:hover {
+    fill: #AD731A;
+  }
+}
+
+#main-municipality {
+  background-color: #6593B8;
+
+  .title {
+    color: white;
+    font-size: 3.7rem;
+    width: $basic-width;
+    height: 130px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 40px 0px;
+
+    > span {
+      font-weight: bold;
+    }
+  }
+
+  > section {
+    width: $basic-width;
+    margin: 0 auto;
+    text-align: center;
+
+    > ul {
+      > li {
+        width: $basic-width/2;
+        color: #3F6E95;
+        border-bottom: 5px solid #3F6E95;
+
+        > a {
+          color: #3F6E95;
+        }
+      }
+
+      > li.active {
+        border-bottom: 5px solid white;
+
+        > a {
+          color: white;
+        }
+      }
+    }
+  }
+
+  .main-graph-fixed {
+    position: relative;
+    height: 500px;
+
+    .graph-region {
+      display: none;
+    }
+
+    .main-description {
+      color: white;
+      background-color: #6189A8;
+      position: absolute;
+      left: 160px;
+      bottom: 60px;
+      margin: 0 auto;
+      padding: 15px 0px;
+      width: $basic-width/1.5;
+      height: 50px;
+      opacity: 0.7;
+
+      > span {
+        font-weight: bold;
+      }
+    }
+
+    > svg {
+      background-color: #6593B8;
+
+      .bar {
+        fill: #37658A;
+      }
+
+      .bar:hover {
+        fill: #E3DDCF;
+        cursor: pointer;
+      }
+
+      .bar-value, .bar-year {
+        fill: #EFF4F7;
+      }
+
+      .axis text {
+        fill: #37658A;
+      }
+
+      path.domain {
+        fill: none;
+        shape-rendering: crispEdges;
+      }
+    }
+  }
+}
+
+
+//
+// Cutomized Bootstrap Components
+//
+
+.nav-tabs > li > a:hover {
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.nav-tabs > li > a,
+.nav-tabs > li > a:focus,
+.nav-tabs > li > a:hover,
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:focus,
+.nav-tabs > li.active > a:hover {
+  background-color: transparent;
+  border-color: transparent;
+  outline: 0px;
+  outline-offset: 0px;
+}

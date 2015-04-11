@@ -1,0 +1,33 @@
+<div class="search-area">
+  <input type="text" name="country" id="autocomplete" class="form-control" placeholder="당신이 사는 지역을 입력해주세요.">
+</div>
+
+<script>
+var countries = [
+    { value: '서울특별시', code: '11' },
+    { value: '부산광역시', code: '21' },
+    { value: '대구광역시', code: '22' },
+    { value: '인천광역시', code: '23' },
+    { value: '광주광역시', code: '24' },
+    { value: '대전광역시', code: '25' },
+    { value: '울산광역시', code: '26' },
+    { value: '세종특별자치시', code: '29' },
+    { value: '경기도', code: '31' },
+    { value: '강원도', code: '32' },
+    { value: '충청북도', code: '33' },
+    { value: '충청남도', code: '34' },
+    { value: '전라북도', code: '35' },
+    { value: '전라남도', code: '36' },
+    { value: '경상북도', code: '37' },
+    { value: '경상남도', code: '38' },
+    { value: '제주특별자치도', code: '39' }
+  ];
+  $('#autocomplete').autocomplete({
+    lookup: countries,
+    onSelect: function (data) {
+      window.open("/local/" + data.code, "_self");
+      $('#autocomplete').val("");
+    }
+  });
+
+</script>

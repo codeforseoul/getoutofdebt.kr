@@ -1,0 +1,259 @@
+header {
+  width: 1000px;
+  margin: 30px auto; }
+  header > .title {
+    text-align: center;
+    font-size: 4.9rem; }
+
+body {
+  background-color: #DFD8C8;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased; }
+
+#main-menu {
+  width: 1000px;
+  margin: 0 auto; }
+  #main-menu li {
+    width: 500px;
+    text-align: center;
+    border-bottom: 5px solid #AFA590; }
+    #main-menu li img {
+      width: 30px; }
+  #main-menu li.active {
+    border-bottom: 5px solid #A56701; }
+
+#searchform {
+  text-align: center;
+  margin-top: 50px; }
+  #searchform > .search-area > input {
+    width: 500px;
+    height: 50px;
+    margin: 0 auto; }
+
+.autocomplete-suggestions {
+  background: #FFF;
+  overflow: auto; }
+
+.autocomplete-suggestion {
+  padding: 2px 5px;
+  white-space: nowrap;
+  overflow: hidden; }
+
+.autocomplete-suggestion:hover {
+  cursor: pointer; }
+
+.autocomplete-selected {
+  background: #F0F0F0; }
+
+.autocomplete-suggestions strong {
+  font-weight: normal;
+  color: #3399FF; }
+
+.autocomplete-group {
+  padding: 2px 5px; }
+
+.autocomplete-group strong {
+  display: block;
+  border-bottom: 1px solid #000; }
+
+#provinces, #municipalities {
+  width: 1000px;
+  margin: 0 auto;
+  height: 700px;
+  position: relative; }
+
+.map svg {
+  position: absolute;
+  left: 0; }
+  .map svg .province:hover {
+    fill: #A56804; }
+  .map svg .province.province-selected {
+    fill: #A56804; }
+
+.graph {
+  position: absolute;
+  top: 0px;
+  left: 550px;
+  padding: 50px 0px;
+  display: inline-block; }
+  .graph .graph-title {
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: underline; }
+  .graph .graph-region {
+    font-size: 17px; }
+  .graph > ul.nav.nav-tabs > li {
+    color: black;
+    background-color: white;
+    border-radius: 25px;
+    border: 1px solid #E3E3E3;
+    display: none; }
+    .graph > ul.nav.nav-tabs > li > a {
+      color: black; }
+  .graph > ul.nav.nav-tabs > li.active {
+    z-index: none; }
+  .graph > ul.nav.nav-tabs > li:first-child {
+    position: absolute;
+    top: 290px;
+    left: -28px;
+    z-index: 1; }
+  .graph > ul.nav.nav-tabs > li:first-child:hover {
+    cursor: pointer; }
+  .graph > ul.nav.nav-tabs > li:last-child {
+    position: absolute;
+    top: 290px;
+    right: -28px;
+    z-index: 1; }
+  .graph .link-to-maingraph {
+    position: absolute;
+    bottom: 0px;
+    height: 80px;
+    width: 410px;
+    background-color: #6794B7;
+    color: white;
+    font-size: 27px;
+    padding: 22px;
+    text-align: center; }
+  .graph .link-to-maingraph:hover {
+    cursor: pointer; }
+  .graph .tab-info {
+    position: absolute;
+    width: 410px;
+    bottom: 0px;
+    background-color: #F0F0F0;
+    color: #555555; }
+    .graph .tab-info .icon {
+      text-align: center;
+      display: inline-block;
+      float: left;
+      width: 68.33333px; }
+      .graph .tab-info .icon > img {
+        margin-top: 18px; }
+    .graph .tab-info .description {
+      display: inline-block;
+      float: left;
+      width: 341.66667px;
+      font-size: 1.6rem;
+      padding: 11px 10px;
+      line-height: 26px; }
+      .graph .tab-info .description > span {
+        font-weight: bold; }
+  .graph #municipal-debt, .graph #municipal-effort {
+    position: relative; }
+    .graph #municipal-debt .subgraph-guide, .graph #municipal-effort .subgraph-guide {
+      position: absolute;
+      top: 160px;
+      left: 164px; }
+    .graph #municipal-debt > svg, .graph #municipal-effort > svg {
+      background-color: white; }
+  .graph #municipal-debt {
+    height: 550px; }
+    .graph #municipal-debt > .tab-info {
+      height: 150px; }
+  .graph #municipal-effort {
+    height: 550px; }
+    .graph #municipal-effort > .tab-info {
+      height: 150px;
+      bottom: 20px; }
+  .graph .bar {
+    fill: #B4B4B4; }
+  .graph .bar:hover {
+    cursor: pointer;
+    fill: #A56804; }
+  .graph .bar-positive {
+    fill: blue; }
+  .graph .bar-negative {
+    fill: red; }
+  .graph .bar-additional {
+    fill: #AD731A; }
+  .graph .bar-highlight {
+    fill: #C3C3C4; }
+  .graph text {
+    font: 10px sans-serif; }
+  .graph path.line {
+    fill: none;
+    stroke: #A56804;
+    shape-rendering: crispEdges; }
+  .graph path.domain {
+    fill: none;
+    shape-rendering: crispEdges; }
+
+#municipal-debt .bar:hover {
+  fill: #AD731A; }
+
+#main-municipality {
+  background-color: #6593B8; }
+  #main-municipality .title {
+    color: white;
+    font-size: 3.7rem;
+    width: 1000px;
+    height: 130px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 40px 0px; }
+    #main-municipality .title > span {
+      font-weight: bold; }
+  #main-municipality > section {
+    width: 1000px;
+    margin: 0 auto;
+    text-align: center; }
+    #main-municipality > section > ul > li {
+      width: 500px;
+      color: #3F6E95;
+      border-bottom: 5px solid #3F6E95; }
+      #main-municipality > section > ul > li > a {
+        color: #3F6E95; }
+    #main-municipality > section > ul > li.active {
+      border-bottom: 5px solid white; }
+      #main-municipality > section > ul > li.active > a {
+        color: white; }
+  #main-municipality .main-graph-fixed {
+    position: relative;
+    height: 500px; }
+    #main-municipality .main-graph-fixed .graph-region {
+      display: none; }
+    #main-municipality .main-graph-fixed .main-description {
+      color: white;
+      background-color: #6189A8;
+      position: absolute;
+      left: 160px;
+      bottom: 60px;
+      margin: 0 auto;
+      padding: 15px 0px;
+      width: 666.66667px;
+      height: 50px;
+      opacity: 0.7; }
+      #main-municipality .main-graph-fixed .main-description > span {
+        font-weight: bold; }
+    #main-municipality .main-graph-fixed > svg {
+      background-color: #6593B8; }
+      #main-municipality .main-graph-fixed > svg .bar {
+        fill: #37658A; }
+      #main-municipality .main-graph-fixed > svg .bar:hover {
+        fill: #E3DDCF;
+        cursor: pointer; }
+      #main-municipality .main-graph-fixed > svg .bar-value, #main-municipality .main-graph-fixed > svg .bar-year {
+        fill: #EFF4F7; }
+      #main-municipality .main-graph-fixed > svg .axis text {
+        fill: #37658A; }
+      #main-municipality .main-graph-fixed > svg path.domain {
+        fill: none;
+        shape-rendering: crispEdges; }
+
+.nav-tabs > li > a:hover {
+  background-color: transparent;
+  border-color: transparent; }
+
+.nav-tabs > li > a,
+.nav-tabs > li > a:focus,
+.nav-tabs > li > a:hover,
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:focus,
+.nav-tabs > li.active > a:hover {
+  background-color: transparent;
+  border-color: transparent;
+  outline: 0px;
+  outline-offset: 0px; }
+
+/*# sourceMappingURL=styles.css.map */

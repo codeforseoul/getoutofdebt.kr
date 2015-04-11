@@ -1,0 +1,499 @@
+
+<section id="municipalities" class="row">
+  <section class="map container">
+  </section>
+  <section class="graph">
+    <ul class="nav nav-tabs" role="menulist">
+      <li role="menu" class="active"><a href="#municipal-debt" aria-controls="municipal-debt" role="tab" data-toggle="tab"><</a></li>
+      <!-- <li role="menu"><a href="#municipal-effort" aria-controls="municipal-effort" role="tab" data-toggle="tab">></a></li> -->
+    </ul>
+      <!-- Tab panes -->
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane fade in active" id="municipal-debt">
+        <div class="subgraph-guide">
+        </div>
+        <div class="tab-info">
+          <div class="icon">
+            <img src="/img/subgraph-description.png" alt="">
+          </div>
+          <div class="description">
+
+          </div>
+        </div>
+      </div>
+      <!-- <div role="tabpanel" class="tab-pane fade in " id="municipal-effort">
+        <div class="tab-info"></div>
+      </div> -->
+    </div>
+    <div class="link-to-maingraph"></div>
+  </section>
+</section>
+
+<section id="main-municipality" class="row">
+  <div class="title">
+
+  </div>
+  <section>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="menulist">
+      <li role="menu" class="active"><a href="#debt" aria-controls="debt" role="tab" data-toggle="tab">채무는 얼만큼 변화했을까?</a></li>
+      <li role="menu"><a href="#effort" aria-controls="effort" role="tab" data-toggle="tab">채무를 줄이기 위해 얼마나 노력을 했을까?</a></li>
+    </ul>
+    <div class="tab-content">
+      <div role="tabpanel" class="maingraph-fixed tab-pane fade in active" id="debt">
+        <section class="main-graph-fixed">
+          <div class="main-description"></div>
+        </section>
+      </div>
+      <div role="tabpanel" class="maingraph-fixed tab-pane fade" id="effort">
+        <section class="main-graph-fixed">
+          <div class="main-description"></div>
+        </section>
+      </div>
+    </div>
+  </section>
+</section>
+
+
+<script>
+  // Parameters
+  var data = <%- JSON.stringify(gov) %>;
+  var enterprise = <%- JSON.stringify(enterprise) %>;
+  var provinceId = <%- id %>;
+
+  /*
+  * Tips for Graphs
+  */
+
+  var tipOnGraph = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset(function (d) {
+      return [0, 0]
+    })
+    .html(function(d) {
+      return "<strong>지자체 채무액:</strong> <span>" + d.ratio + "%</span>";
+    });
+
+  var tipOnMap = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset(function (d) {
+      return [0, 0]
+    })
+    .html(function(d) {
+      return "<strong>지역:</strong> <span>" + d.properties.NAME_2 + d.properties.TYPE_2+ "</span>";
+    });
+
+  var drawDebtGraph = function (svg, data, x) {
+
+    data.sort(function (a, b) {
+      return a.year - b.year;
+    });
+
+    x.domain(data.map(function(d) { return d.year; }));
+    y.domain(d3.extent(data, function(d) { return d.ratio; })).nice();
+    y.domain([0, 30]);
+
+    var yAxis = d3.svg.axis()
+      .scale(y)
+      .orient("left");
+
+    svg.selectAll("g.y.axis")
+      .call(yAxis);
+
+    svg.selectAll(".bar")
+      .data(data)
+      .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d) { return x(d.year); })
+      .attr("y", function(d) { return y(0); })
+      .attr("width", 30)
+      .attr("height", 0)
+        .transition().duration(1000)
+        .attr("y", function(d) { return y(d.ratio); })
+        .attr("height", function(d) {
+          return (graph.height - graph.margin.left*1.5) - y(d.ratio);
+        })
+
+
+    svg.selectAll("bar")
+      .data(data)
+      .enter().append("text")
+        .attr("class", "bar-year")
+        .attr("x", function(d) { return x(d.year)-5; })
+        .attr("y", function (d) { return y(0) + 20; })
+        .text(function(d) { return d.year + "년"; })
+
+    svg.selectAll("bar")
+      .data(data)
+      .enter().append("text")
+        .attr("class", "bar-value")
+        .attr("x", function(d) { return x(d.year); })
+        .attr("y", function (d) { return graph.height; })
+        .transition().duration(1000)
+        .attr("y", function (d) { return y(d.ratio) - 15; })
+        .text(function(d) { return d.ratio + "%"; })
+
+    svg
+      .append("path")
+      .attr("class", "line")
+      .attr("d", emptyLine(data))
+      .transition().duration(1000)
+        .attr("d", line(data));
+
+    svg.append("text")
+      .attr("x", 180)
+      .attr("y", 0 - (graph.margin.top / 3))
+      .attr("class", "graph-region")
+      .attr("text-anchor", "middle")
+      .text(data[0].name);
+  }
+
+  var removeDebtGraph = function (svg) {
+    svg.selectAll(".graph-region")
+      .data([])
+      .exit()
+      .remove();
+
+    svg.selectAll(".bar")
+      .data([])
+      .exit()
+      .remove();
+
+    svg.selectAll("text.bar-value")
+      .data([])
+      .exit()
+      .remove();
+
+    svg.selectAll("text.bar-year")
+      .data([])
+      .exit()
+      .remove();
+
+    svg.selectAll("path")
+      .data([])
+        .exit()
+        .remove();
+  };
+
+
+  /*
+  * configuration of subgraphs
+  */
+
+  var graph = {};
+
+  graph.margin = {top: 100, right: 10, bottom: 30, left: 30};
+
+  graph.width = 410;
+  graph.height = 300;
+
+  graph.y = d3.scale.linear()
+    .range([0, graph.height - (graph.margin.left*1.5)].reverse());
+
+  graph.x = d3.scale.ordinal()
+    .rangeRoundBands([0, graph.width], .2);
+
+  var emptyLine = d3.svg.line()
+    .x(function (d) { return x(d.year); })
+    .y(function (d) { return graph.height; })
+
+  var line = d3.svg.line()
+    .x(function(d) { return x(d.year) + 15; })
+    .y(function(d) { return y(d.ratio); });
+
+  var y = d3.scale.linear()
+      .range([0, graph.height - (graph.margin.left*1.5)].reverse());
+
+  var x = d3.scale.ordinal()
+      .rangeRoundBands([0, graph.width], .2);
+
+  graph.yAxis = d3.svg.axis()
+    .scale(graph.y)
+    .orient("left")
+
+
+  // Draw a default subgraph for all municipalities(시/군/구)
+  var subGraph = d3.select("#municipal-debt").append("svg")
+      .attr("width", graph.width)
+      .attr("height", graph.height+(graph.margin.top))
+    .append("g")
+      .attr("transform", "translate(" + graph.margin.left + "," + graph.margin.top + ")")
+    .call(tipOnGraph)
+
+  subGraph.append("g")
+      .attr("class", "y axis")
+
+  subGraph.append("text")
+    .attr("x", 190)
+    .attr("y", 0 - (graph.margin.top / 1.5))
+    .attr("text-anchor", "middle")
+    .attr("class", "graph-title")
+    .text("2009년 이후 시/군/구 별 채무 현황?")
+
+  d3.select(".subgraph-guide")
+    .html(function () {
+      return "<img src='/img/pin.png'>";
+    });
+
+
+  // Draw a default fixed graph of main-municipality(본청)
+  var fixedGraph = d3.select(".main-graph-fixed").append("svg")
+    .attr("width", graph.width*2)
+      .attr("height", graph.height*1.5)
+    .append("g")
+      .attr("transform", "translate(" + graph.margin.left + "," + graph.margin.top/2 + ")")
+    .call(tipOnGraph)
+
+  fixedGraph.append("g")
+    .attr("class", "y axis");
+
+  d3.select('#main-municipality .title')
+    .html(function () {
+      return "<span>" + data[0].name + "</span>의 채무는?";
+    });
+
+  // xAxis for a fixed graph of main-municipality
+  var xMain = d3.scale.ordinal()
+      .rangeRoundBands([0, graph.width*2], .2);
+
+
+  /*
+  * Configurations for drawing a map
+  */
+
+  var map = {};
+
+  map.width = 600;
+  map.height = 700;
+
+  var colorScale = ["#fff5f0","#fee0d2","#fcbba1","#fc9272","#fb6a4a","#ef3b2c","#cb181d","#a50f15","#67000d"];
+
+  var quantize = function (d) {
+    for (var i = 0; i < data.length; i++) {
+      if (data[i].code == d.properties.code) {
+        return colorScale[Math.floor(data[i].value/10)];
+      }
+    }
+  };
+
+  var getMapSizeByProvince = function (id, w, h) {
+    switch (Number(id)) {
+      case 11:
+        return {
+          "scale": 82500,
+          "translate": [w*2.9, h*4.6]
+        };
+        break;
+      case 21:
+        return {
+          "scale": 89500,
+          "translate": [-1300, -1200]
+        };
+        break;
+      case 22:
+        return {
+          "scale": 69500,
+          "translate": [-400, h/5]
+        };
+        break;
+      case 23:
+        return {
+          "scale": 39500,
+          "translate": [w*2.3, h*2.3]
+        };
+        break;
+      case 24:
+        return {
+          "scale": 92500,
+          "translate": [w*3.55, -1200]
+        };
+        break;
+      case 25:
+        return {
+          "scale": 89500,
+          "translate": [w*2, h*1.6]
+        };
+        break;
+      case 26:
+        return {
+          "scale": 63500,
+          "translate": [-1100, -250]
+        };
+        break;
+      case 31:
+        return {
+          "scale": 23500,
+          "translate": [w, h*1.6]
+        };
+        break;
+      case 32:
+        return {
+          "scale": 17500,
+          "translate": [w/3, h*1.5]
+        };
+        break;
+      case 33:
+        return {
+          "scale": 24500,
+          "translate": [w/1.7, h]
+        };
+        break;
+      case 34:
+        return {
+          "scale": 24500,
+          "translate": [w*1.3, h/1.2]
+        };
+        break;
+      case 35:
+        return {
+          "scale": 22500,
+          "translate": [w, h/4]
+        };
+        break;
+      case 36:
+        return {
+          "scale": 16500,
+          "translate": [w, -100]
+        };
+        break;
+      case 37:
+        return {
+          "scale": 19500,
+          "translate": [w/13, h/1.5]
+        };
+        break;
+      case 38:
+        return {
+          "scale": 23500,
+          "translate": [100, -50]
+        };
+        break;
+      case 39:
+        return {
+          "scale": 33500,
+          "translate": [w*1.9, -1500]
+        };
+        break;
+      default:
+        return {
+          "scale": 9500,
+          "translate": [w/2, h/2]
+        };
+    }
+  };
+
+  var proj = d3.geo.mercator()
+    .center([128.0, 35.9])
+    .translate(300,100)
+    .scale(getMapSizeByProvince(provinceId, map.width, map.height).scale)
+    .translate(getMapSizeByProvince(provinceId, map.width, map.height).translate);
+
+  var path = d3.geo.path().projection(proj);
+
+  var mapSvg = d3.select("#municipalities .map").append("svg")
+    .attr("width", map.width)
+    .attr("height", map.height);
+
+  d3.json("/map/skorea-municipalities-topo.json", function(error, kor) {
+
+    var municipality = {};
+    var municipalityMain = [];
+
+    var provinces = topojson.object(kor, kor.objects['skorea-municipalities-geo']);
+
+    var municipalities = provinces.geometries.filter(function (el) {
+      return el.properties.ID_1 == provinceId;
+    });
+
+    data.forEach(function (el) {
+      if (municipality.hasOwnProperty(el.name.slice(2, -1))) municipality[el.name.slice(2, -1)].push(el);
+      else {
+        municipality[el.name.slice(2, -1)] = [];
+        municipality[el.name.slice(2, -1)].push(el);
+      }
+
+      if (el.name.slice(-2) == "본청")  municipalityMain.push(el);
+    });
+
+    // Draw a fixed graph of main-municipality using data
+    drawDebtGraph(fixedGraph, municipalityMain, xMain);
+
+    fixedGraph.selectAll(".bar")
+      .on("mouseover", function (d) {
+        d3.select(".main-graph-fixed .main-description")
+          .html(function () {
+            return d.year + "년 예산 대비 채무 비율은 <span class=''>" + d.ratio + "%</span>입니다. 예산은 <span>" + d.budget + "백만원</span>이며 채무는 <span>" + d.remain + "백만원</span>입니다.";
+          })
+      });
+
+    // Draw a map using data
+    mapSvg.selectAll("path")
+      .data(municipalities)
+    .enter().append("path")
+      .attr("class", "province")
+      .attr("fill", "#DFD8C8")
+      .attr("cursor", "pointer")
+      .attr("stroke", "#AFA590")
+      .attr("stroke-dasharray", [2,2])
+      .attr("stroke-width", 1.1)
+      .attr("d", path)
+      .call(tipOnMap)
+      .on("mouseover", tipOnMap.show)
+      .on("mouseout", tipOnMap.hide)
+      .on("click", function (d) {
+
+        // Change the color of selected region
+        d3.select(".province-selected")
+          .attr("class", "province");
+        d3.select(this)
+          .attr("class", "province province-selected");
+
+        d3.select(".subgraph-guide")
+          .html(function () {
+            return "";
+          });
+
+        // initialize description section of the subgraph
+        d3.select(".tab-info .description")
+        .html(function () {
+          return "마우스를 그래프에 올리면 더 자세한 정보를 볼 수 있습니다.";
+        });
+
+        subGraph.select(".subgraph-guide")
+        .text("");
+
+        // removed the previous subgraph and redraw a graph of selected region
+        removeDebtGraph(subGraph);
+        drawDebtGraph(subGraph, municipality[d.properties.NAME_2], x);
+
+        // add an event for the subgraph
+        subGraph.selectAll(".bar")
+          .on("mouseover", function (d) {
+            d3.select(".tab-info .description")
+            .html(function () {
+              return d.year + "년 예산 대비 채무 비율은 <span>" + d.ratio + "%</span>입니다.<br>예산은 <span>" + d.budget + "백만원</span>이며<br>채무는 <span>" + d.remain + "백만원</span>입니다.";
+            })
+          })
+      });
+
+    mapSvg.selectAll("text")
+      .data(municipalities)
+      .enter().append("text")
+        .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
+        .attr("dy", ".35em")
+        .text(function(d) { return d.properties.NAME_2 + d.properties.TYPE_2; });
+  });
+
+  d3.selectAll(".link-to-maingraph")
+    .text(function () { return data[0].name + "의 채무는?"})
+
+  d3.selectAll(".link-current")
+    .html(function () { return " - " + data[0].name.slice(0, 2);})
+
+  $(".link-to-maingraph").click(function (d) {
+    $('html,body').animate({scrollTop: $('#main-municipality').position().top}, 500);
+    return false;
+  });
+
+
+</script>

@@ -1,0 +1,240 @@
+<section id="provinces">
+  <section class="map">
+
+  </section>
+  <section class="graph">
+
+  </section>
+</section>
+
+<script>
+  var data = <%- JSON.stringify(gov) %>;
+  var enterprise = <%- JSON.stringify(enterprise) %>;
+
+  data.forEach(function (el) {
+    for (var i = 0; i < enterprise.length; i++) {
+      if (el.code == 29) {
+        el.totalRatio = el.ratio;
+        return;
+      } else if (el.code == enterprise[i].code) el.totalRatio = Number((100*(el.remain + enterprise[i].remain)/(el.budget + enterprise[i].budget)).toFixed(2));
+    }
+  });
+
+  data.sort(function (a, b) {
+    return b.totalRatio - a.totalRatio;
+  });
+
+  var colorScale = ["#ffffff","#f0f0f0","#d9d9d9","#bdbdbd","#969696","#737373","#525252","#252525","#000000"];
+
+  var quantize = function (d) {
+    for (var i = 0; i < data.length; i++) {
+      if (data[i].code == d.properties.code) {
+        return colorScale[Math.round(data[i].totalRatio/5)];
+      }
+    }
+  };
+
+  var avgData = data.reduce(function (a, b) {
+    return a + b.totalRatio;
+  }, 0)/data.length;
+
+
+  var margin = {top: 100, right: 10, bottom: 30, left: 100},
+    width = 410,
+    height = 600;
+
+  var x = d3.scale.linear()
+      .range([0, width - margin.left*1.5])
+
+  var y = d3.scale.ordinal()
+      .rangeRoundBands([0, height], .2);
+
+  var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("top");
+
+  var tipOnGraph = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset(function (d) {
+      return [0, 0]
+    })
+    .html(function(d) {
+      for (var i = 0; i < enterprise.length; i++) {
+        if (d.code == enterprise[i].code) return "<strong>지자체 채무액:</strong> <span>" + d.ratio + "%</span><br><strong>공기업 부채 규모:</strong> <span>" + enterprise[i].ratio + "%</span>";
+      }
+    });
+
+  var tipOnMap = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset(function (d) {
+      return [0, 0]
+    })
+    .html(function(d) {
+      return "<strong>지역:</strong> <span>" + d.properties.name+ "</span>";
+    });
+
+  var svgGraph = d3.select("#provinces > .graph").append("svg")
+    .attr("width", width)
+    .attr("height", height+(margin.top))
+    .style("background-color", "white")
+    .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+    .call(tipOnGraph)
+
+
+  svgGraph.append("text")
+    .attr("x", 100)
+    .attr("y", 0 - (margin.top / 1.5))
+    .attr("text-anchor", "middle")
+    .style("font-size", "20px")
+    .style("font-weight", "bold")
+    .style("text-decoration", "underline")
+    .text("2013년 채무비율이 가장 높았던 지역은?");
+
+  svgGraph.append("text")
+    .attr("x", 90)
+    .attr("y", 0 - (margin.top/2.5))
+    .attr("text-anchor", "middle")
+    .attr("fill", "#B3B3B3")
+    .style("font-size", "13px")
+    .text("(지자체 채무액 + 공기업 부채액 / 지자체 에산 + 공기업 자산)");
+
+  x.domain(d3.extent(data, function(d) { return d.totalRatio; })).nice();
+  y.domain(data.map(function(d) { return d.name; }));
+  x.domain([0, data[0].totalRatio + 5]);
+
+  var count = data.length;
+
+  svgGraph.selectAll(".bar")
+    .data(data)
+    .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d) { return x(Math.min(0, d.totalRatio)); })
+      .attr("y", function(d) { return y(d.name); })
+      .attr("width", function(d) { return 0; })
+      .attr("height", 15)
+      .on("mouseover", tipOnGraph.show)
+      .on("mouseout", tipOnGraph.hide)
+      .transition().duration(800)
+        .attr("width", function(d) { return d.totalRatio < avgData ? x(d.totalRatio) : x(avgData); })
+      .each("end", function () {
+        count--;
+
+        if (count == 0) {
+          svgGraph.selectAll(".bar-additional")
+          .data(data)
+          .enter().append("rect")
+            .attr("class", "bar-additional")
+            .attr("x", function(d) { return d.totalRatio < avgData ? 0 : x(avgData); })
+            .attr("y", function(d) { return y(d.name); })
+            .attr("width", function(d) { return 0; })
+            .attr("height", 15)
+          .transition().duration(800).ease("in")
+            .attr("width", function(d) { return x(d.totalRatio - avgData); })
+        }
+      })
+
+  svgGraph.selectAll("bar")
+    .data(data)
+    .enter().append("text")
+      .attr("x", function(d) { return -40; })
+      .attr("y", function (d) { return y(d.name) + 15; })
+      .style("font", "14px serif")
+      .text(function(d) { return d.name; })
+
+  svgGraph.selectAll("bar")
+    .data(data)
+    .enter().append("rect")
+      .attr("x", function(d) { return -90; })
+      .attr("y", function (d) { return y(d.name)-5; })
+      .attr("class", function (d) { return "bar-highlight " + d.code; })
+      .attr("width", function(d) { return 380; })
+      .attr("height", 30)
+      .style("opacity", 0.3)
+      .style("visibility", "hidden")
+
+  svgGraph.selectAll("bar")
+    .data(data)
+    .enter().append("text")
+      .attr("x", function(d) { return Math.abs(x(d.totalRatio) - x(0)) + 10; })
+      .attr("y", function (d) { return y(d.name) + 15; })
+      .text(function(d) { return d.totalRatio + "%"; })
+
+
+
+  svgGraph.append("g")
+      .attr("class", "x axis")
+      .call(xAxis);
+
+  var yAxis = svgGraph.append("g")
+    .attr("class", "y axis")
+
+
+  yAxis
+  .append("line")
+    .attr("x1", x(0))
+    .attr("x2", x(0))
+    .attr("y2", height)
+    .style("stroke", "#C4C4C4")
+
+  yAxis
+  .append("line")
+    .attr("x1", x(avgData))
+    .attr("x2", x(avgData))
+    .attr("y2", height)
+    .style("stroke", "#C4C4C4")
+    .style("stroke-width", 0.2)
+
+  yAxis
+  .append("line")
+    .attr("x1", x(data[0].totalRatio))
+    .attr("x2", x(data[0].totalRatio))
+    .attr("y2", height)
+    .style("stroke", "#C4C4C4")
+    .style("stroke-width", 0.2)
+
+  var map = {};
+  map.width = 600;
+  map.height = 800;
+
+  var proj = d3.geo.mercator()
+    .center([128.0, 35.9])
+    .scale(6500)
+    .translate([map.width/2, map.height/2]);
+
+  var path = d3.geo.path().projection(proj);
+
+  var svgMap = d3.select("#provinces > .map").append("svg")
+    .attr("width", map.width)
+    .attr("height", map.height);
+
+  d3.json("/map/provinces-topo.json", function(error, kor) {
+
+    var provinces = topojson.object(kor, kor.objects['state']);
+
+    svgMap.selectAll("path")
+      .data(provinces.geometries)
+    .enter().append("path")
+      .attr("class", "province")
+      .attr("fill", quantize)
+      .attr("cursor", "pointer")
+      .attr("stroke", "#AFA590")
+      .attr("stroke-width", 0.4)
+      .attr("d", path)
+      .call(tipOnMap)
+      .on("mouseover", function (d) {
+        tipOnMap.show(d);
+        $(".bar-highlight." + d.properties.code).css("visibility", "visible");
+      })
+      .on("mouseout", function (d) {
+        tipOnMap.hide(d);
+        $(".bar-highlight." + d.properties.code).css("visibility", "hidden");
+      })
+      .on("click", function (d) {
+        window.open('/local/'+d.properties.code,'_self');
+      })
+
+  });
+
+
+</script>
