@@ -64,7 +64,6 @@
   /*
   * Tips for Graphs
   */
-
   var tipOnGraph = d3.tip()
     .attr('class', 'd3-tip')
     .offset(function (d) {
@@ -91,7 +90,10 @@
 
     x.domain(data.map(function(d) { return d.year; }));
     y.domain(d3.extent(data, function(d) { return d.ratio; })).nice();
-    y.domain([0, 30]);
+    y.domain([0, d3.max(data, function (d) { return d.ratio; }) + 15]);
+
+    var xAxis = svg.append("g")
+        .attr("class", "x axis");
 
     var yAxis = d3.svg.axis()
       .scale(y)
@@ -99,6 +101,15 @@
 
     svg.selectAll("g.y.axis")
       .call(yAxis);
+
+    for (var i = 0; i <= d3.max(data, function (d) { return d.ratio; }) + 15; i += 10) {
+      xAxis.append('line')
+        .attr('x1', graph.width*2)
+        .attr('y1', y(i))
+        .attr('y2', y(i))
+        .attr('class', 'xAxis')
+        .style("stroke-width", 0.2)
+    }
 
     svg.selectAll(".bar")
       .data(data)
@@ -112,7 +123,7 @@
         .attr("y", function(d) { return y(d.ratio); })
         .attr("height", function(d) {
           return (graph.height - graph.margin.left*1.5) - y(d.ratio);
-        })
+        });
 
 
     svg.selectAll("bar")
@@ -121,7 +132,7 @@
         .attr("class", "bar-year")
         .attr("x", function(d) { return x(d.year)-5; })
         .attr("y", function (d) { return y(0) + 20; })
-        .text(function(d) { return d.year + "년"; })
+        .text(function(d) { return d.year + "년"; });
 
     svg.selectAll("bar")
       .data(data)
@@ -131,7 +142,7 @@
         .attr("y", function (d) { return graph.height; })
         .transition().duration(1000)
         .attr("y", function (d) { return y(d.ratio) - 15; })
-        .text(function(d) { return d.ratio + "%"; })
+        .text(function(d) { return d.ratio + "%"; });
 
     svg
       .append("path")
@@ -211,8 +222,9 @@
     .scale(graph.y)
     .orient("left")
 
-
-  // Draw a default subgraph for all municipalities(시/군/구)
+  /*
+  * Draw a default subgraph for all municipalities(시/군/구)
+  */
   var subGraph = d3.select("#municipal-debt").append("svg")
       .attr("width", graph.width)
       .attr("height", graph.height+(graph.margin.top))
@@ -236,25 +248,28 @@
     });
 
 
-  // Draw a default fixed graph of main-municipality(본청)
-  var fixedGraph = d3.select(".main-graph-fixed").append("svg")
+  /*
+  /* Draw a default main fixed graph for main municipality(본청)
+  */
+
+  var fixedDebtGraph = d3.select("#debt .main-graph-fixed").append("svg")
     .attr("width", graph.width*2)
       .attr("height", graph.height*1.5)
     .append("g")
       .attr("transform", "translate(" + graph.margin.left + "," + graph.margin.top/2 + ")")
     .call(tipOnGraph)
 
-  fixedGraph.append("g")
+  // xAxis for a fixed graph of main-municipality
+  var xMain = d3.scale.ordinal()
+      .rangeRoundBands([0, graph.width*2], .2);
+
+  fixedDebtGraph.append("g")
     .attr("class", "y axis");
 
   d3.select('#main-municipality .title')
     .html(function () {
       return "<span>" + data[0].name + "</span>의 채무는?";
     });
-
-  // xAxis for a fixed graph of main-municipality
-  var xMain = d3.scale.ordinal()
-      .rangeRoundBands([0, graph.width*2], .2);
 
 
   /*
@@ -416,9 +431,9 @@
     });
 
     // Draw a fixed graph of main-municipality using data
-    drawDebtGraph(fixedGraph, municipalityMain, xMain);
+    drawDebtGraph(fixedDebtGraph, municipalityMain, xMain);
 
-    fixedGraph.selectAll(".bar")
+    fixedDebtGraph.selectAll(".bar")
       .on("mouseover", function (d) {
         d3.select(".main-graph-fixed .main-description")
           .html(function () {
@@ -497,3 +512,5 @@
 
 
 </script>
+<script src="/js/graph/municipal-debt-main.js"></script>
+<script src="/js/graph/municipal-effort-main.js"></script>

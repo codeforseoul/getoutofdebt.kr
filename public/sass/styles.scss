@@ -10,8 +10,12 @@ header {
   margin: 30px auto;
 
   > .title {
+    padding: 13px 0px;
     text-align: center;
-    font-size: 4.9rem;
+
+    img {
+      width: $basic-width/2.3;
+    }
   }
 }
 
@@ -271,6 +275,10 @@ body {
     shape-rendering: crispEdges;
   }
 
+  line.xAxis {
+    stroke: #C3C3C4;
+  }
+
 }
 
 #municipal-debt {
@@ -375,6 +383,41 @@ body {
   }
 }
 
+#debt .main-graph-fixed {
+  line.xAxis {
+    stroke: #37658A;
+  }
+}
+
+#effort .main-graph-fixed {
+  .bar.bar-positive {
+    fill: #E3DDCF;
+  }
+
+  .bar.bar-positive:hover {
+    fill: #37658A;
+  }
+
+  .bar.bar-negative {
+    fill: #37658A;
+  }
+
+  text {
+    fill: #EFF4F7;
+    font-size: 1.3rem;
+  }
+
+  text.effort-title {
+    fill: #37658A;
+    font-size: 1.3rem;
+  }
+
+  .main-description {
+    height: 80px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+}
 
 //
 // Cutomized Bootstrap Components

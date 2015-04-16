@@ -2,8 +2,10 @@ header {
   width: 1000px;
   margin: 30px auto; }
   header > .title {
-    text-align: center;
-    font-size: 4.9rem; }
+    padding: 13px 0px;
+    text-align: center; }
+    header > .title img {
+      width: 434.78261px; }
 
 body {
   background-color: #DFD8C8;
@@ -178,6 +180,8 @@ body {
   .graph path.domain {
     fill: none;
     shape-rendering: crispEdges; }
+  .graph line.xAxis {
+    stroke: #C3C3C4; }
 
 #municipal-debt .bar:hover {
   fill: #AD731A; }
@@ -240,6 +244,26 @@ body {
       #main-municipality .main-graph-fixed > svg path.domain {
         fill: none;
         shape-rendering: crispEdges; }
+
+#debt .main-graph-fixed line.xAxis {
+  stroke: #37658A; }
+
+#effort .main-graph-fixed .bar.bar-positive {
+  fill: #E3DDCF; }
+#effort .main-graph-fixed .bar.bar-positive:hover {
+  fill: #37658A; }
+#effort .main-graph-fixed .bar.bar-negative {
+  fill: #37658A; }
+#effort .main-graph-fixed text {
+  fill: #EFF4F7;
+  font-size: 1.3rem; }
+#effort .main-graph-fixed text.effort-title {
+  fill: #37658A;
+  font-size: 1.3rem; }
+#effort .main-graph-fixed .main-description {
+  height: 80px;
+  padding-top: 5px;
+  padding-bottom: 5px; }
 
 .nav-tabs > li > a:hover {
   background-color: transparent;
