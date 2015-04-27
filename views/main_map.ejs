@@ -3,10 +3,32 @@
 
   </section>
   <section class="graph">
-
+    <div class="graph-description">
+      <h3>2013년 채무 비율이 가장 높았던 지역은?</h3>
+      <p>채무 비율 = 지자체 채무 비율 + 공기업 부채 비율</p>
+      <hr>
+      <p>
+        - <strong>예산 대비 채무 비율이란?</strong>: (채무잔액 / 최종예산액) × 100<br>
+        - <strong>공기업 부채 비율이란?</strong>: (지방 공사, 공단 부채 / 자산) x 100
+      </p>
+      <hr>
+    </div>
+  </section>
+  <section class="share-buttons">
+    <div class="fb-like" data-href="http://getoutofdebt.kr/" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+    <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://getoutofdebt.kr" data-text="우리지역 채무탈출! 내가 사는 지역의 채무는 얼마나 될까요?" data-via="codenamu" data-hashtags="2015-transparency" data-dnt="true">Tweet</a>
   </section>
 </section>
 
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3&appId=1395225104048971";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+</script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 <script>
   var data = <%- JSON.stringify(gov) %>;
   var enterprise = <%- JSON.stringify(enterprise) %>;
@@ -39,7 +61,7 @@
   }, 0)/data.length;
 
 
-  var margin = {top: 100, right: 10, bottom: 30, left: 100},
+  var margin = {top: 0, right: 10, bottom: 30, left: 100},
     width = 410,
     height = 600;
 
@@ -60,7 +82,7 @@
     })
     .html(function(d) {
       for (var i = 0; i < enterprise.length; i++) {
-        if (d.code == enterprise[i].code) return "<strong>지자체 채무액:</strong> <span>" + d.ratio + "%</span><br><strong>공기업 부채 규모:</strong> <span>" + enterprise[i].ratio + "%</span>";
+        if (d.code == enterprise[i].code) return "<strong>예산대비 채무비율:</strong> <span>" + d.ratio + "%</span><br><strong>공기업 부채비율:</strong> <span>" + enterprise[i].ratio + "%</span>";
       }
     });
 
@@ -81,24 +103,6 @@
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
     .call(tipOnGraph)
 
-
-  svgGraph.append("text")
-    .attr("x", 100)
-    .attr("y", 0 - (margin.top / 1.5))
-    .attr("text-anchor", "middle")
-    .style("font-size", "20px")
-    .style("font-weight", "bold")
-    .style("text-decoration", "underline")
-    .text("2013년 채무비율이 가장 높았던 지역은?");
-
-  svgGraph.append("text")
-    .attr("x", 90)
-    .attr("y", 0 - (margin.top/2.5))
-    .attr("text-anchor", "middle")
-    .attr("fill", "#B3B3B3")
-    .style("font-size", "13px")
-    .text("(지자체 채무액 + 공기업 부채액 / 지자체 에산 + 공기업 자산)");
-
   x.domain(d3.extent(data, function(d) { return d.totalRatio; })).nice();
   y.domain(data.map(function(d) { return d.name; }));
   x.domain([0, data[0].totalRatio + 5]);
@@ -113,8 +117,11 @@
       .attr("y", function(d) { return y(d.name); })
       .attr("width", function(d) { return 0; })
       .attr("height", 15)
-      .on("mouseover", tipOnGraph.show)
-      .on("mouseout", tipOnGraph.hide)
+      .on("mouseover", function (d) {
+        tipOnGraph.show(d);
+        $(".bar-highlight").css("visibility", "hidden");
+        $(".bar-highlight." + d.code).css("visibility", "visible");
+      })
       .transition().duration(800)
         .attr("width", function(d) { return d.totalRatio < avgData ? x(d.totalRatio) : x(avgData); })
       .each("end", function () {
@@ -138,20 +145,20 @@
     .data(data)
     .enter().append("text")
       .attr("x", function(d) { return -40; })
-      .attr("y", function (d) { return y(d.name) + 15; })
-      .style("font", "14px serif")
+      .attr("y", function (d) { return y(d.name) + 12; })
+      .style("font", "14px")
       .text(function(d) { return d.name; })
 
   svgGraph.selectAll("bar")
     .data(data)
     .enter().append("rect")
       .attr("x", function(d) { return -90; })
-      .attr("y", function (d) { return y(d.name)-5; })
+      .attr("y", function (d) { return y(d.name)-8; })
       .attr("class", function (d) { return "bar-highlight " + d.code; })
       .attr("width", function(d) { return 380; })
       .attr("height", 30)
       .style("opacity", 0.3)
-      .style("visibility", "hidden")
+      .style("visibility", "hidden");
 
   svgGraph.selectAll("bar")
     .data(data)
@@ -162,9 +169,9 @@
 
 
 
-  svgGraph.append("g")
-      .attr("class", "x axis")
-      .call(xAxis);
+  // svgGraph.append("g")
+  //     .attr("class", "x axis")
+  //     .call(xAxis);
 
   var yAxis = svgGraph.append("g")
     .attr("class", "y axis")
@@ -175,7 +182,7 @@
     .attr("x1", x(0))
     .attr("x2", x(0))
     .attr("y2", height)
-    .style("stroke", "#C4C4C4")
+    .style("stroke", "#C4C4C4");
 
   yAxis
   .append("line")
@@ -183,7 +190,7 @@
     .attr("x2", x(avgData))
     .attr("y2", height)
     .style("stroke", "#C4C4C4")
-    .style("stroke-width", 0.2)
+    .style("stroke-width", 0.2);
 
   yAxis
   .append("line")
@@ -191,7 +198,7 @@
     .attr("x2", x(data[0].totalRatio))
     .attr("y2", height)
     .style("stroke", "#C4C4C4")
-    .style("stroke-width", 0.2)
+    .style("stroke-width", 0.2);
 
   var map = {};
   map.width = 600;
@@ -223,6 +230,9 @@
       .attr("d", path)
       .call(tipOnMap)
       .on("mouseover", function (d) {
+        tipOnGraph.hide();
+        $(".bar-highlight").css("visibility", "hidden");
+
         tipOnMap.show(d);
         $(".bar-highlight." + d.properties.code).css("visibility", "visible");
       })

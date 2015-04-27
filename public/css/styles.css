@@ -1,17 +1,22 @@
 header {
   width: 1000px;
+  height: 90px;
   margin: 30px auto; }
   header > .title {
     padding: 13px 0px;
     text-align: center; }
     header > .title img {
-      width: 434.78261px; }
+      width: 100%;
+      height: 62px; }
 
 body {
   background-color: #DFD8C8;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Malgun Gothic', Arial, Helvetica, sans-serif;
   font-weight: normal;
   -webkit-font-smoothing: antialiased; }
+
+#main {
+  min-height: 550px; }
 
 #main-menu {
   width: 1000px;
@@ -21,24 +26,27 @@ body {
     text-align: center;
     border-bottom: 5px solid #AFA590; }
     #main-menu li img {
-      width: 30px; }
+      width: 40px;
+      height: 40px; }
   #main-menu li.active {
-    border-bottom: 5px solid #A56701; }
+    border-bottom: 5px solid #A56804; }
 
 #searchform {
   text-align: center;
   margin-top: 50px; }
   #searchform > .search-area > input {
-    width: 500px;
-    height: 50px;
-    margin: 0 auto; }
+    width: 780px;
+    height: 92px;
+    margin: 0 auto;
+    font-size: 3.4rem; }
 
 .autocomplete-suggestions {
   background: #FFF;
   overflow: auto; }
 
 .autocomplete-suggestion {
-  padding: 2px 5px;
+  font-size: 3.0rem;
+  padding: 25px 5px;
   white-space: nowrap;
   overflow: hidden; }
 
@@ -50,7 +58,7 @@ body {
 
 .autocomplete-suggestions strong {
   font-weight: normal;
-  color: #3399FF; }
+  color: #A56804; }
 
 .autocomplete-group {
   padding: 2px 5px; }
@@ -62,8 +70,11 @@ body {
 #provinces, #municipalities {
   width: 1000px;
   margin: 0 auto;
-  height: 700px;
+  height: 1000px;
   position: relative; }
+
+#municipalities {
+  height: 769.23077px; }
 
 .map svg {
   position: absolute;
@@ -73,43 +84,62 @@ body {
   .map svg .province.province-selected {
     fill: #A56804; }
 
+.share-buttons {
+  width: 410px;
+  position: absolute;
+  top: 880px;
+  right: 0px; }
+  .share-buttons > .fb-like {
+    margin-bottom: 6px; }
+
 .graph {
+  font-family: 'malgun gothic';
   position: absolute;
   top: 0px;
-  left: 550px;
+  right: 0px;
   padding: 50px 0px;
   display: inline-block; }
-  .graph .graph-title {
-    font-size: 20px;
-    font-weight: bold;
-    text-decoration: underline; }
+  .graph .graph-description {
+    padding: 13px;
+    background-color: white; }
+    .graph .graph-description > h3 {
+      font-size: 20px;
+      font-weight: bold;
+      text-decoration: underline; }
+    .graph .graph-description > p {
+      color: #6E6E6E;
+      /* line-height: 20px; */
+      /* letter-spacing: -50px; */ }
+    .graph .graph-description > hr {
+      color: #F4F4F4; }
   .graph .graph-region {
     font-size: 17px; }
-  .graph > ul.nav.nav-tabs > li {
-    color: black;
-    background-color: white;
-    border-radius: 25px;
-    border: 1px solid #E3E3E3;
-    display: none; }
-    .graph > ul.nav.nav-tabs > li > a {
-      color: black; }
-  .graph > ul.nav.nav-tabs > li.active {
-    z-index: none; }
-  .graph > ul.nav.nav-tabs > li:first-child {
-    position: absolute;
-    top: 290px;
-    left: -28px;
-    z-index: 1; }
-  .graph > ul.nav.nav-tabs > li:first-child:hover {
-    cursor: pointer; }
-  .graph > ul.nav.nav-tabs > li:last-child {
-    position: absolute;
-    top: 290px;
-    right: -28px;
-    z-index: 1; }
+  .graph > ul.nav.nav-tabs {
+    width: 410px; }
+    .graph > ul.nav.nav-tabs > li {
+      z-index: 15;
+      color: black;
+      background-color: white;
+      border-radius: 25px;
+      border: 1px solid #E3E3E3; }
+      .graph > ul.nav.nav-tabs > li > a {
+        color: black; }
+    .graph > ul.nav.nav-tabs > li.active {
+      display: none;
+      z-index: none; }
+    .graph > ul.nav.nav-tabs > li:first-child {
+      position: absolute;
+      top: 290px;
+      left: -25px; }
+    .graph > ul.nav.nav-tabs > li:first-child:hover {
+      cursor: pointer; }
+    .graph > ul.nav.nav-tabs > li:last-child {
+      position: absolute;
+      top: 290px;
+      right: -25px; }
   .graph .link-to-maingraph {
     position: absolute;
-    bottom: 0px;
+    bottom: 70px;
     height: 80px;
     width: 410px;
     background-color: #6794B7;
@@ -119,60 +149,43 @@ body {
     text-align: center; }
   .graph .link-to-maingraph:hover {
     cursor: pointer; }
-  .graph .tab-info {
+  .graph .subgraph-info {
     position: absolute;
     width: 410px;
-    bottom: 0px;
+    height: 130px;
+    bottom: -40px;
     background-color: #F0F0F0;
     color: #555555; }
-    .graph .tab-info .icon {
+    .graph .subgraph-info .icon {
       text-align: center;
       display: inline-block;
       float: left;
       width: 68.33333px; }
-      .graph .tab-info .icon > img {
+      .graph .subgraph-info .icon > img {
         margin-top: 18px; }
-    .graph .tab-info .description {
+    .graph .subgraph-info .description {
       display: inline-block;
       float: left;
       width: 341.66667px;
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       padding: 11px 10px;
       line-height: 26px; }
-      .graph .tab-info .description > span {
+      .graph .subgraph-info .description > span {
         font-weight: bold; }
-  .graph #municipal-debt, .graph #municipal-effort {
-    position: relative; }
-    .graph #municipal-debt .subgraph-guide, .graph #municipal-effort .subgraph-guide {
-      position: absolute;
-      top: 160px;
-      left: 164px; }
-    .graph #municipal-debt > svg, .graph #municipal-effort > svg {
-      background-color: white; }
-  .graph #municipal-debt {
-    height: 550px; }
-    .graph #municipal-debt > .tab-info {
-      height: 150px; }
-  .graph #municipal-effort {
-    height: 550px; }
-    .graph #municipal-effort > .tab-info {
-      height: 150px;
-      bottom: 20px; }
+      .graph .subgraph-info .description > p {
+        font-size: 1.2rem; }
   .graph .bar {
-    fill: #B4B4B4; }
-  .graph .bar:hover {
-    cursor: pointer;
-    fill: #A56804; }
+    fill: #ddad51;
+    cursor: pointer; }
   .graph .bar-positive {
-    fill: blue; }
+    fill: #A56804; }
   .graph .bar-negative {
-    fill: red; }
+    fill: #C3C3C4; }
   .graph .bar-additional {
     fill: #AD731A; }
   .graph .bar-highlight {
+    cursor: pointer;
     fill: #C3C3C4; }
-  .graph text {
-    font: 10px sans-serif; }
   .graph path.line {
     fill: none;
     stroke: #A56804;
@@ -182,9 +195,43 @@ body {
     shape-rendering: crispEdges; }
   .graph line.xAxis {
     stroke: #C3C3C4; }
-
-#municipal-debt .bar:hover {
-  fill: #AD731A; }
+  .graph #municipal-debt, .graph #municipal-effort {
+    position: relative;
+    height: 700px; }
+    .graph #municipal-debt .subgraph, .graph #municipal-debt .subgraph-loading, .graph #municipal-effort .subgraph, .graph #municipal-effort .subgraph-loading {
+      position: absolute;
+      background-color: white;
+      width: 410px;
+      height: 550px; }
+    .graph #municipal-debt .subgraph, .graph #municipal-effort .subgraph {
+      z-index: 11; }
+    .graph #municipal-debt .subgraph-loading, .graph #municipal-effort .subgraph-loading {
+      z-index: 12;
+      text-align: center; }
+      .graph #municipal-debt .subgraph-loading > img.pin, .graph #municipal-effort .subgraph-loading > img.pin {
+        margin-top: 220px;
+        margin-bottom: 20px; }
+    .graph #municipal-debt .subgraph-title, .graph #municipal-effort .subgraph-title {
+      width: 100%;
+      text-align: center; }
+    .graph #municipal-debt > svg, .graph #municipal-effort > svg {
+      background-color: white; }
+  .graph #municipal-debt .bar:hover {
+    fill: #AD731A; }
+  .graph #municipal-debt .subgraph {
+    height: 510px; }
+  .graph #municipal-effort .subgraph {
+    height: 550px; }
+  .graph #municipal-effort .subgraph-info {
+    height: 140px;
+    bottom: 0px; }
+  .graph #municipal-effort .selectedEffortBar {
+    opacity: 0.3;
+    visibility: hidden; }
+  .graph #municipal-effort .effort-title {
+    font-size: 1.1rem; }
+  .graph #municipal-effort .effort-value {
+    font-size: 1.1rem; }
 
 #main-municipality {
   background-color: #6593B8; }
@@ -218,15 +265,14 @@ body {
     #main-municipality .main-graph-fixed .graph-region {
       display: none; }
     #main-municipality .main-graph-fixed .main-description {
+      width: 1000px;
+      height: 50px;
       color: white;
       background-color: #6189A8;
       position: absolute;
-      left: 160px;
       bottom: 60px;
       margin: 0 auto;
       padding: 15px 0px;
-      width: 666.66667px;
-      height: 50px;
       opacity: 0.7; }
       #main-municipality .main-graph-fixed .main-description > span {
         font-weight: bold; }
@@ -264,6 +310,32 @@ body {
   height: 80px;
   padding-top: 5px;
   padding-bottom: 5px; }
+#effort .main-graph-fixed .selectedEffortBar {
+  background-color: #7DA3C2;
+  opacity: 0.3;
+  visibility: hidden; }
+
+footer {
+  background-color: #656468;
+  height: 230px;
+  color: #cbcbcb; }
+  footer > section.footer {
+    width: 1000px;
+    margin: 0 auto; }
+    footer > section.footer > div.footer-col {
+      width: 250px;
+      display: inline-block;
+      float: left; }
+      footer > section.footer > div.footer-col > h4 {
+        font-family: 'open sans';
+        font-weight: bold;
+        font-size: 1.6rem;
+        color: #efefef; }
+      footer > section.footer > div.footer-col a, footer > section.footer > div.footer-col a:hover {
+        color: #cbcbcb; }
+  footer > section.footer-desc {
+    padding-top: 30px;
+    padding-bottom: 20px; }
 
 .nav-tabs > li > a:hover {
   background-color: transparent;
@@ -279,5 +351,9 @@ body {
   border-color: transparent;
   outline: 0px;
   outline-offset: 0px; }
+
+.form-control:focus {
+  border-color: #A56804;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px RGBA(165, 104, 4, 0.6); }
 
 /*# sourceMappingURL=styles.css.map */

@@ -1,12 +1,16 @@
 $basic-width:               1000px;
 $map-width:                 600px;
-$map-height:                700px;
+$map-height:                1000px;
 $municipality-graph-width:  410px;
 $municipality-graph-height: 400px;
+$theme-color:               #A56804;
+$theme-color-light:         #AD731A;
+
 
 
 header {
   width: $basic-width;
+  height: 90px;
   margin: 30px auto;
 
   > .title {
@@ -14,18 +18,22 @@ header {
     text-align: center;
 
     img {
-      width: $basic-width/2.3;
+      width: 100%;
+      height: 62px;
     }
   }
 }
 
 body {
   background-color: #DFD8C8;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Malgun Gothic', Arial, Helvetica, sans-serif;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
 }
 
+#main {
+  min-height: 550px;
+}
 
 #main-menu {
   width: $basic-width;
@@ -37,24 +45,16 @@ body {
     border-bottom: 5px solid #AFA590;
 
     img {
-      width: 30px;
+      width: 40px;
+      height: 40px;
+
     }
   }
 
   li.active {
-    border-bottom: 5px solid #A56701;
+    border-bottom: 5px solid $theme-color;
   }
 }
-
-// #main-content {
-//   width: $basic-width;
-//   margin: 0 auto;
-
-//   > .tab-content > .tab-pane {
-//     position: relative;
-//     padding: 50px 0px;
-//   }
-// }
 
 #searchform {
   text-align: center;
@@ -63,19 +63,19 @@ body {
   > .search-area {
 
     > input {
-      width: 500px;
-      height: 50px;
+      width: 780px;
+      height: 92px;
       margin: 0 auto;
+      font-size: 3.4rem;
     }
   }
 }
 
 .autocomplete-suggestions { background: #FFF; overflow: auto; }
-
-.autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+.autocomplete-suggestion { font-size: 3.0rem; padding: 25px 5px; white-space: nowrap; overflow: hidden; }
 .autocomplete-suggestion:hover { cursor: pointer;}
 .autocomplete-selected { background: #F0F0F0; }
-.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+.autocomplete-suggestions strong { font-weight: normal; color: $theme-color; }
 .autocomplete-group { padding: 2px 5px; }
 .autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
 
@@ -86,6 +86,10 @@ body {
   position: relative;
 }
 
+#municipalities {
+  height: $map-height/1.3;
+}
+
 .map {
 
   svg {
@@ -93,40 +97,71 @@ body {
     left: 0;
 
     .province:hover {
-      fill: #A56804;
+      fill: $theme-color;
     }
 
     .province.province-selected {
-      fill: #A56804;
+      fill: $theme-color;
     }
 
   }
 }
 
+.share-buttons {
+  width: $municipality-graph-width;
+  position: absolute;
+  top: 880px;
+  right: 0px;
+
+  > .fb-like {
+    margin-bottom: 6px;
+  }
+}
+
+
 .graph {
+  font-family: 'malgun gothic';
   position: absolute;
   top: 0px;
-  left: 550px;
+  right: 0px;
   padding: 50px 0px;
   display: inline-block;
 
-  .graph-title {
-    font-size: 20px;
-    font-weight: bold;
-    text-decoration: underline;
+  .graph-description {
+    padding: 13px;
+    background-color: white;
+
+    > h3 {
+      font-size: 20px;
+      font-weight: bold;
+      text-decoration: underline;
+    }
+
+    > p {
+      color: #6E6E6E;
+      /* line-height: 20px; */
+      /* letter-spacing: -50px; */
+    }
+
+    > hr {
+      color: #F4F4F4;
+    }
   }
+
 
   .graph-region {
     font-size: 17px;
   }
 
   > ul.nav.nav-tabs {
+    width: $municipality-graph-width;
+
     > li {
+      z-index: 15;
       color: black;
       background-color: white;
       border-radius: 25px;
       border: 1px solid #E3E3E3;
-      display: none;
 
       > a {
         color: black;
@@ -134,14 +169,14 @@ body {
     }
 
     > li.active {
+      display: none;
       z-index: none;
     }
 
     > li:first-child {
       position: absolute;
       top: 290px;
-      left: -28px;
-      z-index: 1;
+      left: -25px;
     }
 
     > li:first-child:hover {
@@ -151,31 +186,31 @@ body {
     > li:last-child {
       position: absolute;
       top: 290px;
-      right: -28px;
-      z-index: 1;
+      right: -25px;
     }
   }
 
-    .link-to-maingraph {
-      position: absolute;
-      bottom: 0px;
-      height: 80px;
-      width: $municipality-graph-width;
-      background-color: #6794B7;
-      color: white;
-      font-size: 27px;
-      padding: 22px;
-      text-align: center;
-    }
+  .link-to-maingraph {
+    position: absolute;
+    bottom: 70px;
+    height: 80px;
+    width: $municipality-graph-width;
+    background-color: #6794B7;
+    color: white;
+    font-size: 27px;
+    padding: 22px;
+    text-align: center;
+  }
 
-    .link-to-maingraph:hover {
-      cursor: pointer;
-    }
+  .link-to-maingraph:hover {
+    cursor: pointer;
+  }
 
-  .tab-info {
+  .subgraph-info {
     position: absolute;
     width: $municipality-graph-width;
-    bottom: 0px;
+    height: 130px;
+    bottom: -40px;
     background-color: #F0F0F0;
     color: #555555;
 
@@ -194,79 +229,45 @@ body {
       display: inline-block;
       float: left;
       width: $municipality-graph-width * 5/6;
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       padding: 11px 10px;
       line-height: 26px;
 
       > span {
         font-weight: bold;
       }
-    }
-  }
 
-  #municipal-debt, #municipal-effort {
-    position: relative;
-
-    .subgraph-guide {
-      position: absolute;
-      top: $municipality-graph-height/2.5;
-      left: $municipality-graph-width/2.5;
-    }
-
-    > svg {
-      background-color: white;
-    }
-  }
-
-  #municipal-debt {
-    height: $municipality-graph-height + 150px;
-
-    > .tab-info {
-      height: 150px;
-    }
-  }
-
-  #municipal-effort {
-    height: $municipality-graph-height + 150px;
-
-    > .tab-info {
-      height: 150px;
-      bottom: 20px;
+      > p {
+        font-size: 1.2rem;
+      }
     }
   }
 
   .bar {
-    fill: #B4B4B4;
-  }
-
-  .bar:hover {
+    fill: #ddad51;
     cursor: pointer;
-    fill: #A56804;
   }
 
   .bar-positive {
-    fill: blue;
+    fill: $theme-color;
   }
 
   .bar-negative {
-    fill: red;
-  }
-
-  .bar-additional {
-    fill: #AD731A;
-  }
-
-  .bar-highlight {
     fill: #C3C3C4;
   }
 
-  text {
-    font: 10px sans-serif;
+  .bar-additional {
+    fill: $theme-color-light;
+  }
+
+  .bar-highlight {
+    cursor: pointer;
+    fill: #C3C3C4;
   }
 
   path.line {
     fill: none;
-    stroke: #A56804;
+    stroke: $theme-color;
     shape-rendering: crispEdges;
   }
 
@@ -279,13 +280,75 @@ body {
     stroke: #C3C3C4;
   }
 
+  #municipal-debt, #municipal-effort {
+    position: relative;
+    height: $municipality-graph-height + 300px;
+
+    .subgraph, .subgraph-loading {
+      position: absolute;
+      background-color: white;
+      width: $municipality-graph-width;
+      height: 550px;
+    }
+
+    .subgraph { z-index: 11; }
+    .subgraph-loading {
+      z-index: 12;
+      text-align: center;
+
+      > img.pin {
+        margin-top: 220px;
+        margin-bottom: 20px;
+      }
+    }
+
+    .subgraph-title {
+      width: 100%;
+      text-align: center;
+    }
+
+    > svg {
+      background-color: white;
+    }
+  }
+
+  #municipal-debt {
+
+    .bar:hover {
+      fill: $theme-color-light;
+    }
+
+    .subgraph {
+      height: 510px;
+    }
+  }
+
+  #municipal-effort {
+    .subgraph {
+      height: 550px;
+    }
+
+    .subgraph-info {
+      height: 140px;
+      bottom: 0px;
+    }
+
+    .selectedEffortBar {
+      opacity: 0.3;
+      visibility: hidden;
+    }
+
+    .effort-title {
+      font-size: 1.1rem;
+    }
+
+    .effort-value {
+      font-size: 1.1rem;
+    }
+  }
+
 }
 
-#municipal-debt {
-  .bar:hover {
-    fill: #AD731A;
-  }
-}
 
 #main-municipality {
   background-color: #6593B8;
@@ -339,15 +402,14 @@ body {
     }
 
     .main-description {
+      width: $basic-width;
+      height: 50px;
       color: white;
       background-color: #6189A8;
       position: absolute;
-      left: 160px;
       bottom: 60px;
       margin: 0 auto;
       padding: 15px 0px;
-      width: $basic-width/1.5;
-      height: 50px;
       opacity: 0.7;
 
       > span {
@@ -417,7 +479,47 @@ body {
     padding-top: 5px;
     padding-bottom: 5px;
   }
+
+  .selectedEffortBar {
+    background-color: #7DA3C2;
+    opacity: 0.3;
+    visibility: hidden;
+  }
 }
+
+footer {
+  background-color: #656468;
+  height: 230px;
+  color: #cbcbcb;
+
+  > section.footer {
+    width: $basic-width;
+    margin: 0 auto;
+
+    > div.footer-col {
+      width: 250px;
+      display: inline-block;
+      float: left;
+
+      > h4 {
+        font-family: 'open sans';
+        font-weight: bold;
+        font-size: 1.6rem;
+        color: #efefef;
+      }
+
+      a, a:hover {
+        color: #cbcbcb;
+      }
+    }
+  }
+
+  > section.footer-desc {
+    padding-top: 30px;
+    padding-bottom: 20px;
+  }
+}
+
 
 //
 // Cutomized Bootstrap Components
@@ -438,4 +540,9 @@ body {
   border-color: transparent;
   outline: 0px;
   outline-offset: 0px;
+}
+
+.form-control:focus {
+  border-color: $theme-color;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px RGBA(165, 104, 4, 0.6);
 }

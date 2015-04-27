@@ -3,8 +3,8 @@
  * var User = require('../models/user');
  */
 
-var Municipality = require("../models/municipality");
-var Enterprise = require("../models/enterprise");
+var Municipality = require('../models/municipality');
+var Enterprise = require('../models/enterprise');
 
 var controller = module.exports = {};
 
@@ -16,10 +16,9 @@ controller.index = function (req, res) {
         title: '전국 채무 비율',
         gov: localgov,
         enterprise: result
-      })
+      });
     });
   });
-  ;
 };
 
 controller.local = function (req, res) {
@@ -32,7 +31,7 @@ controller.local = function (req, res) {
         enterprise: enterprises,
         id: req.params.id
       });
-    })
-  })
+    });
+  });
 
 };
