@@ -105,11 +105,10 @@ body {
     .graph .graph-description > h3 {
       font-size: 20px;
       font-weight: bold;
-      text-decoration: underline; }
+      letter-spacing: -2px; }
     .graph .graph-description > p {
       color: #6E6E6E;
-      /* line-height: 20px; */
-      /* letter-spacing: -50px; */ }
+      letter-spacing: -1.5px; }
     .graph .graph-description > hr {
       color: #F4F4F4; }
   .graph .graph-region {
@@ -160,7 +159,8 @@ body {
       text-align: center;
       display: inline-block;
       float: left;
-      width: 68.33333px; }
+      padding-top: 6px;
+      padding-left: 13px; }
       .graph .subgraph-info .icon > img {
         margin-top: 18px; }
     .graph .subgraph-info .description {
@@ -168,12 +168,13 @@ body {
       float: left;
       width: 341.66667px;
       font-size: 1.5rem;
-      padding: 11px 10px;
-      line-height: 26px; }
+      padding: 19px 10px;
+      line-height: 20px; }
       .graph .subgraph-info .description > span {
         font-weight: bold; }
       .graph .subgraph-info .description > p {
-        font-size: 1.2rem; }
+        font-size: 1.2rem;
+        line-height: 17px; }
   .graph .bar {
     fill: #ddad51;
     cursor: pointer; }
@@ -213,7 +214,8 @@ body {
         margin-bottom: 20px; }
     .graph #municipal-debt .subgraph-title, .graph #municipal-effort .subgraph-title {
       width: 100%;
-      text-align: center; }
+      text-align: center;
+      letter-spacing: -1px; }
     .graph #municipal-debt > svg, .graph #municipal-effort > svg {
       background-color: white; }
   .graph #municipal-debt .bar:hover {
@@ -254,6 +256,8 @@ body {
       color: #3F6E95;
       border-bottom: 5px solid #3F6E95; }
       #main-municipality > section > ul > li > a {
+        font-size: 1.8rem;
+        letter-spacing: -0.5px;
         color: #3F6E95; }
     #main-municipality > section > ul > li.active {
       border-bottom: 5px solid white; }
@@ -267,6 +271,7 @@ body {
     #main-municipality .main-graph-fixed .main-description {
       width: 1000px;
       height: 50px;
+      font-size: 1.5rem;
       color: white;
       background-color: #6189A8;
       position: absolute;

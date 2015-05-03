@@ -134,13 +134,12 @@ body {
     > h3 {
       font-size: 20px;
       font-weight: bold;
-      text-decoration: underline;
+      letter-spacing: -2px;
     }
 
     > p {
       color: #6E6E6E;
-      /* line-height: 20px; */
-      /* letter-spacing: -50px; */
+      letter-spacing: -1.5px;
     }
 
     > hr {
@@ -218,7 +217,8 @@ body {
       text-align: center;
       display: inline-block;
       float: left;
-      width: $municipality-graph-width * 1/6;
+      padding-top: 6px;
+      padding-left: 13px;
 
       > img {
         margin-top: 18px;
@@ -230,8 +230,8 @@ body {
       float: left;
       width: $municipality-graph-width * 5/6;
       font-size: 1.5rem;
-      padding: 11px 10px;
-      line-height: 26px;
+      padding: 19px 10px;
+      line-height: 20px;
 
       > span {
         font-weight: bold;
@@ -239,6 +239,7 @@ body {
 
       > p {
         font-size: 1.2rem;
+        line-height: 17px;
       }
     }
   }
@@ -305,6 +306,7 @@ body {
     .subgraph-title {
       width: 100%;
       text-align: center;
+      letter-spacing: -1px;
     }
 
     > svg {
@@ -379,6 +381,8 @@ body {
         border-bottom: 5px solid #3F6E95;
 
         > a {
+          font-size: 1.8rem;
+          letter-spacing: -0.5px;
           color: #3F6E95;
         }
       }
@@ -404,6 +408,7 @@ body {
     .main-description {
       width: $basic-width;
       height: 50px;
+      font-size: 1.5rem;
       color: white;
       background-color: #6189A8;
       position: absolute;
